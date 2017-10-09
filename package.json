@@ -15,8 +15,7 @@
     "shortid": "^2.2.8",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
-    "vue": "^2.4.2",
-    "vue-socket-io": "^0.3.2"
+    "vue": "^2.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
