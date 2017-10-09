@@ -7,12 +7,7 @@ const app = express();
 const httpServer = http.Server(app);
 const io = require("socket.io")(httpServer);
 
-
 app.use(express.static("dist"));
-
-app.get("/", (req, res) => {
-  res.send("<h1>Hello mtv</h1>");
-});
 
 io.on("connection", (socket) => {
   const userId = shortid();
