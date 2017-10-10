@@ -13,7 +13,6 @@
  *  - List of people in the room.
  */
 import { mapGetters } from "vuex";
-import socket from "../../socket/socket";
 
 import MessageForm from "./MessageForm.vue";
 import MessageList from "./MessageList.vue";
@@ -25,13 +24,6 @@ export default {
     ...mapGetters({
       messages: "messages",
     }),
-  },
-  created() {
-    console.log(this.$store);
-    socket.on(`${this.room}:msg`, (data) => {
-      console.log(data);
-      // this.messages[this.room].push(data);
-    });
   },
   components: {
     MessageList,

@@ -15,6 +15,8 @@
 
 <script>
 import { mapGetters } from "vuex";
+import store from "../store";
+import socket from "../../socket/socket";
 
 import Room from "./Room.vue";
 
@@ -33,6 +35,15 @@ export default {
     changeRoom: function changeRoom(roomId) {
       this.currentRoom = roomId;
     },
+  },
+  created() {
+    const rooms = this.openRooms;
+    const commit = roomId => data => store.commit("NEW_MESSAGE", { ...data, roomId });
+
+    for (let i = 0; i < rooms.length; i += 1) {
+      const { roomId } = rooms[i];
+      socket.on(`${roomId}:msg`, commit(roomId));
+    }
   },
 };
 

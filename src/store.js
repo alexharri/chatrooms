@@ -1,32 +1,32 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import shortid from "shortid";
 
 Vue.use(Vuex);
-
-const tempId = shortid();
 
 const store = new Vuex.Store({
   state: {
     general: {
-      messages: [{ text: "General", userId: "user_id", id: tempId }],
-      resolved: { [tempId]: true },
+      messages: [{ text: "General", userId: "user_id" }],
       unread: 0,
     },
     something: {
-      messages: [{ text: "Something", userId: "user_id", id: tempId }],
-      resolved: { [tempId]: true },
+      messages: [{ text: "Something", userId: "user_id" }],
       unread: 0,
     },
     other: {
-      messages: [{ text: "Other", userId: "user_id", id: tempId }],
-      resolved: { [tempId]: true },
+      messages: [{ text: "Other", userId: "user_id" }],
       unread: 0,
     },
     random: {
-      messages: [{ text: "Random", userId: "user_id", id: tempId }],
-      resolved: { [tempId]: true },
+      messages: [{ text: "Random", userId: "user_id" }],
       unread: 0,
+    },
+  },
+  mutations: {
+    NEW_MESSAGE(state, payload) {
+      const { roomId, text, userId } = payload;
+      console.log({ roomId });
+      state[roomId].messages.push({ text, userId });
     },
   },
   getters: {
