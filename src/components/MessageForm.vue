@@ -1,6 +1,6 @@
 <template>
-  <form v-on:submit="onSubmit">
-    <input type="text" id="message-input" v-model="message">
+  <form v-on:submit="onSubmit" autocomplete="off">
+    <input type="text" id="message-input" v-model="message" autocomplete="off">
     <button type="submit">Send</button>
   </form>
 </template>
