@@ -24,9 +24,15 @@ const store = new Vuex.Store({
   },
   mutations: {
     NEW_MESSAGE(state, payload) {
-      const { roomId, text, userId } = payload;
-      console.log({ roomId });
+      const { roomId, currentRoom, text, userId } = payload;
       state[roomId].messages.push({ text, userId });
+      console.log({ currentRoom });
+      if (roomId !== currentRoom) {
+        state[roomId].unread += 1;
+      }
+    },
+    CHANGED_ROOM(state, roomId) {
+      state[roomId].unread = 0;
     },
   },
   getters: {
@@ -37,10 +43,7 @@ const store = new Vuex.Store({
     rooms: state =>
       Object.keys(state)
         .map(roomId => ({ roomId, unread: state[roomId].unread })),
-    messages: state => (roomId) => {
-      console.log(state[roomId].messages);
-      return state[roomId].messages;
-    },
+    messages: state => roomId => state[roomId].messages,
   },
 });
 

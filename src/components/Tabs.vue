@@ -34,11 +34,13 @@ export default {
   methods: {
     changeRoom: function changeRoom(roomId) {
       this.currentRoom = roomId;
+      store.commit("CHANGED_ROOM", roomId);
     },
   },
   created() {
     const rooms = this.openRooms;
-    const commit = roomId => data => store.commit("NEW_MESSAGE", { ...data, roomId });
+    const commit = roomId => data =>
+      store.commit("NEW_MESSAGE", { ...data, roomId, currentRoom: this.currentRoom });
 
     for (let i = 0; i < rooms.length; i += 1) {
       const { roomId } = rooms[i];

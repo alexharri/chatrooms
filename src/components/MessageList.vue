@@ -10,9 +10,6 @@
 export default {
   name: "MessageList",
   props: ["messages"],
-  created() {
-    console.log(this.messages);
-  },
 };
 </script>
 
