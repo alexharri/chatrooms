@@ -1,17 +1,17 @@
 import io from "socket.io-client";
 import store from "../src/store";
 
-const socketManager = {
+const sockets = {
 
 };
 
 export function joinNamespace(namespace) {
-  if (socketManager[namespace]) {
+  if (sockets[namespace]) {
     throw new Error(`Already in namespace '${namespace}'`);
   }
 
   const nsp = io("localhost:3000/" + namespace);
-  socketManager[namespace] = nsp;
+  sockets[namespace] = nsp;
 
   nsp.on("msg", ({ username, text }) => {
     store.commit("NEW_MESSAGE", { namespace, text, username });
@@ -21,7 +21,7 @@ export function joinNamespace(namespace) {
 }
 
 export function getSocket(namespace) {
-  return socketManager[namespace] || null;
+  return sockets[namespace] || null;
 }
 
 export function emit(eventName, namespace, payload) {
