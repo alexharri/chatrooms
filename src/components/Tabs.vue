@@ -6,7 +6,7 @@
         v-on:click="changeRoom(room.roomId)"
         :class="{ tab: true, active: currentRoom === room.roomId }"
       >
-        {{ room.roomId }} ({{ room.unread }})
+        {{ room.roomId }} <span v-if="room.unread > 0">({{ room.unread }})</span>
       </li>
     </ul>
     <room :room="currentRoom" />
@@ -61,7 +61,13 @@ export default {
 .tab {
   max-width: 100px;
   padding: 8px;
+  border-radius: 12px 12px 0 0;
   background: rgba(0,0,0,.15);
+}
+
+.tab:hover {
+  background: rgba(0,0,0,.125);
+  cursor: pointer;
 }
 
 .tab.active {
