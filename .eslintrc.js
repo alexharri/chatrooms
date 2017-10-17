@@ -36,6 +36,7 @@ module.exports = {
     "prefer-promise-reject-errors": 0,
     "no-param-reassign": 0,
     "function-paren-newline": 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "no-underscore-dangle": 0
   }
 }

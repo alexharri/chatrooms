@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import socket from "../../socket/socket";
+import { emit } from "../../socket/sockets";
 
 export default {
   name: "MessageForm",
@@ -18,9 +18,12 @@ export default {
     onSubmit: function onSubmit(e) {
       e.preventDefault();
 
-      socket.emit("msg", { room: this.room, text: this.message });
+      emit("msg", this.room, this.message);
       this.message = "";
     },
+  },
+  mounted() {
+    document.getElementById("message-input").focus();
   },
 };
 </script>

@@ -16,7 +16,7 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "../store";
-import socket from "../../socket/socket";
+import { joinNamespace } from "../../socket/sockets";
 
 import Room from "./Room.vue";
 
@@ -39,12 +39,11 @@ export default {
   },
   created() {
     const rooms = this.openRooms;
-    const commit = roomId => data =>
-      store.commit("NEW_MESSAGE", { ...data, roomId, currentRoom: this.currentRoom });
 
     for (let i = 0; i < rooms.length; i += 1) {
-      const { roomId } = rooms[i];
-      socket.on(`${roomId}:msg`, commit(roomId));
+      const socket = joinNamespace(rooms[i].roomId);
+      const { username, password } = store.state.auth;
+      socket.emit("login", { username, password });
     }
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="message in messages">
-      {{ message.userId }}: {{ message.text }}
+      {{ message.username }}: {{ message.text }}
     </li>
   </ul>
 </template>
