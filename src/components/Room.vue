@@ -1,6 +1,6 @@
 <template>
   <div class="some-container">
-    <message-list :messages="messages(room)" />
+    <message-list :messages="messages(room)" :room="room" />
     <message-form :room="room" />
   </div>
 </template>

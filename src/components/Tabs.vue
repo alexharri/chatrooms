@@ -43,7 +43,6 @@ export default {
   methods: {
     changeRoom: function changeRoom(roomId) {
       this.currentRoom = roomId;
-      store.commit("GO_TO_ROOM", roomId);
     },
   },
   created() {

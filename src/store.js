@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import shortid from "shortid";
 
 Vue.use(Vuex);
 
@@ -26,16 +27,21 @@ const store = new Vuex.Store({
       state._openRooms.push(room);
       Vue.set(state, room, {
         messages: [],
-        unread: 0,
       });
     },
     NEW_MESSAGE(state, payload) {
       const { room, text, username } = payload;
-      state[room].messages.push({ text, username });
-      state[room].unread += 1;
+      state[room].messages.push({ text, username, read: false, id: shortid() });
     },
-    GO_TO_ROOM(state, roomId) {
-      state[roomId].unread = 0;
+    READ_MESSAGE(state, payload) {
+      const { messageId, room } = payload;
+      const messageIndex = state[room].messages.map(m => m.id).indexOf(messageId);
+
+      if (messageIndex < 0) {
+        throw new Error(`Message by id '${messageId}' in room '${room}'`);
+      }
+
+      state[room].messages[messageIndex].read = true;
     },
     LOGIN(state, payload) {
       const { username, password } = payload;
@@ -44,13 +50,14 @@ const store = new Vuex.Store({
     },
   },
   getters: {
-    unread: state => roomId => state[roomId].unread,
-    totalUnread: state =>
+    unread: state => roomId =>
+      state[roomId].messages.reduce((total, message) => (message.read ? total : total + 1), 0),
+    totalUnread: (state, getters) =>
       state._openRooms
-        .reduce((total, roomId) => total + state[roomId].unread, 0),
-    rooms: state =>
+        .reduce((total, roomId) => (total + getters.unread(roomId)), 0),
+    rooms: (state, getters) =>
       state._openRooms
-        .map(roomId => ({ roomId, unread: state[roomId].unread })),
+        .map(roomId => ({ roomId, unread: getters.unread(roomId) })),
     messages: state => (roomId) => {
       if (!state[roomId]) {
         throw new Error(`Could not find room '${roomId}' in store.`);
