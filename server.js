@@ -16,22 +16,26 @@ app.use(express.static("dist"));
 app.use(bodyParser.json());
 
 const namespaces = {};
+const namespaceRegex = /^[A-z]+$/;
 
 function createNameSpace(namespace, cb) {
   if (namespaces[namespace]) {
     const err = new Error(`Namespace '${namespace}' already exists.`);
-    if (typeof cb === "function") {
-      cb(err);
-    } else {
+    if (typeof cb !== "function") {
       throw err;
     }
+    cb(err);
+    return;
   }
 
-  /*
-  if (namespaceRegexTest) {
-    throw new Error("Handle this case.");
+  if (!namespaceRegex.test(namespace)) {
+    const err = new Error(`Invalid namespace '${namespace}'`);
+    if (typeof cb !== "function") {
+      throw err;
+    }
+    cb(err);
+    return;
   }
-  */
 
   namespaces[namespace] = true;
 
@@ -77,7 +81,6 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/createRoom", (req, res) => {
-  console.log("Hello");
   const namespace = req.body.room;
 
   if (!namespace || typeof namespace !== "string") {
@@ -89,6 +92,12 @@ app.post("/createRoom", (req, res) => {
   if (namespaces[namespace]) {
     res.statusMessage = "ROOM_EXISTS";
     res.sendStatus(409);
+    return;
+  }
+
+  if (!namespaceRegex.test(namespace)) {
+    res.statusMessage = "INVALID_NAME";
+    res.sendStatus(400);
     return;
   }
 
