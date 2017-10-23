@@ -1,7 +1,7 @@
 <template>
   <div class="some-container">
     <message-list :messages="messages(room)" :room="room" />
-    <message-form :room="room" />
+    <message-form :room="room" :key="room" />
   </div>
 </template>
 

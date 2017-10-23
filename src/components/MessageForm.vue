@@ -13,6 +13,7 @@ export default {
   props: ["room"],
   data: () => ({
     message: "",
+    lastRoom: this.room,
   }),
   methods: {
     onSubmit: function onSubmit(e) {

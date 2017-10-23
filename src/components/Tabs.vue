@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <nav class="main-navigation">
-      <join-room />
+      <join-room :changeRoom="changeRoom" />
     </nav>
     <div class="main-container">
       <nav class="tab-navigation">

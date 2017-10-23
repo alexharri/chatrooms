@@ -73,6 +73,7 @@ ul {
   list-style-type: none;
   padding: 16px;
   overflow-y: scroll;
+  flex-grow: 1;
 }
 
 li {

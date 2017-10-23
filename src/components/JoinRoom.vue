@@ -19,6 +19,7 @@ const roomRegex = /^[A-z]+$/;
 
 export default {
   name: "JoinRoom",
+  props: ["changeRoom"],
   data: () => ({
     newRoomName: "",
   }),
@@ -41,6 +42,7 @@ export default {
       axios.post("http://localhost:3333/createRoom", { room })
         .then(() => {
           joinRoom(room);
+          this.changeRoom(room);
         })
         .catch((err) => {
           /**
@@ -50,6 +52,7 @@ export default {
           if (err && err.response) {
             if (err.response.statusText === "ROOM_EXISTS") {
               joinRoom(room);
+              this.changeRoom(room);
               return;
             }
             if (err.response.statusText === "INVALID_NAME") {
