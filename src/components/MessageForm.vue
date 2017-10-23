@@ -32,7 +32,8 @@ export default {
 
 form {
   display: flex;
-  height: 50px;
+  flex-basis: 50px;
+  min-height: 50px;
 }
 
 input {

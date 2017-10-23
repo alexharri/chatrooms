@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="some-container">
     <message-list :messages="messages(room)" />
     <message-form :room="room" />
   </div>
@@ -33,4 +33,13 @@ export default {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+  
+.some-container {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+}
+
+</style>

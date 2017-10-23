@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <nav>
+    <nav class="main-navigation">
       <join-room />
     </nav>
     <div class="main-container">
-      <header>
+      <nav class="tab-navigation">
         <ul class="tab-container">
           <li
             v-for="room in openRooms"
@@ -14,7 +14,7 @@
             {{ room.roomId }} <span v-if="room.unread > 0 && room.roomId !== currentRoom">({{ room.unread }})</span>
           </li>
         </ul>
-      </header>
+      </nav>
       <room :room="currentRoom" />
     </div>
   </div>
@@ -63,21 +63,28 @@ export default {
 
 .app-container {
   display: flex;
+  height: 100vh;
+  align-items: stretch;
 }
 
-nav {
+nav.main-navigation {
   padding: 0 16px;
   flex-basis: 200px;
   max-width: 200px;
-}
-
-header {
-  background: rgba(0,0,0,.05);
-  border: 1px solid rgba(0,0,0,.2);
+  background: rgba(0,0,0,.1);
 }
 
 .main-container {
   flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+nav.tab-navigation {
+  background: rgba(0,0,0,.05);
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  flex-grow: 0;
 }
 
 .tab-container {

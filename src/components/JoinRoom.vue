@@ -71,6 +71,18 @@ export default {
   text-align: left;
 }
 
+.new-chatroom-container label {
+  margin-bottom: 16px;
+}
+
+.new-chatroom-container label div {
+  margin-bottom: 8px;
+}
+
+.new-chatroom-container input {
+  width: 100%;
+}
+
 .new-chatroom-error {
   color: rgba(255,0,0,.7);
   margin-left: 8px;
