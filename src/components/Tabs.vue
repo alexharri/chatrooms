@@ -1,30 +1,31 @@
 <template>
-  <div>
-    <ul class="tab-container">
-      <li
-        v-for="room in openRooms"
-        v-on:click="changeRoom(room.roomId)"
-        :class="{ tab: true, active: currentRoom === room.roomId }"
-      >
-        {{ room.roomId }} <span v-if="room.unread > 0 && room.roomId !== currentRoom">({{ room.unread }})</span>
-      </li>
-    </ul>
-    <form v-on:submit="createRoom" autocomplete="off" class="new-chatroom-container">
-      <label for="new-chatroom">
-        <div>New chatroom</div>
-        <input id="new-chatroom">
-      </label>
-    </form>
-    <room :room="currentRoom" />
+  <div class="app-container">
+    <nav>
+      <join-room />
+    </nav>
+    <div class="main-container">
+      <header>
+        <ul class="tab-container">
+          <li
+            v-for="room in openRooms"
+            v-on:click="changeRoom(room.roomId)"
+            :class="{ tab: true, active: currentRoom === room.roomId }"
+          >
+            {{ room.roomId }} <span v-if="room.unread > 0 && room.roomId !== currentRoom">({{ room.unread }})</span>
+          </li>
+        </ul>
+      </header>
+      <room :room="currentRoom" />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
 import store from "../store";
 import joinRoom from "../actions/joinRoom";
 
+import JoinRoom from "./JoinRoom.vue";
 import Room from "./Room.vue";
 
 export default {
@@ -37,40 +38,12 @@ export default {
   }),
   components: {
     Room,
+    JoinRoom,
   },
   methods: {
     changeRoom: function changeRoom(roomId) {
       this.currentRoom = roomId;
       store.commit("GO_TO_ROOM", roomId);
-    },
-    joinRoom: (optRoom) => {
-      const room = optRoom || document.getElementById("join-chatroom").value;
-      joinRoom(room);
-    },
-    createRoom: function createRoom(e) {
-      e.preventDefault();
-      const room = document.getElementById("new-chatroom").value;
-
-      if (!room || typeof room !== "string") {
-        throw new Error(`Expected ${room} to be a string.`);
-      }
-
-      axios.post("http://localhost:3333/createRoom", { room })
-        .then(() => {
-          this.joinRoom(room);
-        })
-        .catch((err) => {
-          if (
-            err &&
-            err.response &&
-            err.response.statusText === "ROOM_EXISTS"
-          ) {
-            console.log("Room already exists.");
-            this.joinRoom(room);
-          } else {
-            throw err;
-          }
-        });
     },
   },
   created() {
@@ -87,6 +60,25 @@ export default {
 </script>
 
 <style scoped>
+
+.app-container {
+  display: flex;
+}
+
+nav {
+  padding: 0 16px;
+  flex-basis: 200px;
+  max-width: 200px;
+}
+
+header {
+  background: rgba(0,0,0,.05);
+  border: 1px solid rgba(0,0,0,.2);
+}
+
+.main-container {
+  flex-grow: 1;
+}
 
 .tab-container {
   display: flex;
