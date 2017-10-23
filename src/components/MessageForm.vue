@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { emit } from "../../socket/sockets";
+import { emit } from "../socket";
 
 export default {
   name: "MessageForm",

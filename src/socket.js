@@ -1,9 +1,6 @@
 import io from "socket.io-client";
-import store from "../src/store";
 
-const sockets = {
-
-};
+const sockets = {};
 
 export function joinNamespace(namespace) {
   if (sockets[namespace]) {
@@ -12,10 +9,6 @@ export function joinNamespace(namespace) {
 
   const nsp = io("localhost:3000/" + namespace);
   sockets[namespace] = nsp;
-
-  nsp.on("msg", ({ username, text }) => {
-    store.commit("NEW_MESSAGE", { namespace, text, username });
-  });
 
   return nsp;
 }

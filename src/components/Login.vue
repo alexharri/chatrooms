@@ -28,7 +28,6 @@ export default {
   }),
   methods: {
     onSubmit(e) {
-      console.log("HELLO");
       e.preventDefault();
 
       const { username, password } = this;
