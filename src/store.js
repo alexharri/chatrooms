@@ -48,6 +48,10 @@ const store = new Vuex.Store({
       state.auth.username = username;
       state.auth.password = password;
     },
+    LOGOUT(state) {
+      state.auth.username = null;
+      state.auth.password = null;
+    },
   },
   getters: {
     unread: state => roomId =>
@@ -65,6 +69,7 @@ const store = new Vuex.Store({
       return state[roomId].messages;
     },
     isInRoom: state => roomId => (state[roomId] && typeof state[roomId] === "object"),
+    isLoggedIn: state => !!state.auth.username,
   },
 });
 

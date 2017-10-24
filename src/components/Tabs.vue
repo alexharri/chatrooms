@@ -2,6 +2,7 @@
   <div class="app-container">
     <nav class="main-navigation">
       <join-room :changeRoom="changeRoom" />
+      <logout />
     </nav>
     <div class="main-container">
       <nav class="tab-navigation">
@@ -27,6 +28,7 @@ import joinRoom from "../actions/joinRoom";
 
 import JoinRoom from "./JoinRoom.vue";
 import Room from "./Room.vue";
+import Logout from "./Logout.vue";
 
 export default {
   name: "Tabs",
@@ -39,6 +41,7 @@ export default {
   components: {
     Room,
     JoinRoom,
+    Logout,
   },
   methods: {
     changeRoom: function changeRoom(roomId) {
@@ -71,6 +74,9 @@ nav.main-navigation {
   flex-basis: 200px;
   max-width: 200px;
   background: rgba(0,0,0,.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .main-container {

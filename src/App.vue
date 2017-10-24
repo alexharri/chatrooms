@@ -1,23 +1,23 @@
 <template>
   <div id="app">
-    <login v-if="!loggedIn" :onLogin="onLogin" />
+    <login v-if="!isLoggedIn" />
     <tabs v-else />
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from "vuex";
+
 import Tabs from "./components/Tabs.vue";
 import Login from "./components/Login.vue";
 
 export default {
   name: "app",
-  data: () => ({
-    loggedIn: false,
-  }),
-  methods: {
-    onLogin() {
-      this.loggedIn = true;
-    },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "isLoggedIn",
+    }),
   },
   components: {
     Tabs,

@@ -17,9 +17,10 @@
 <script>
 import store from "../store";
 
+import { LOCAL_AUTH_KEY as localAuthKey } from "../constants";
+
 export default {
   name: "Login",
-  props: ["onLogin"],
   data: () => ({
     username: "",
     password: "",
@@ -37,8 +38,41 @@ export default {
       }
 
       store.commit("LOGIN", { username, password });
-      this.onLogin();
+      localStorage.setItem(localAuthKey, JSON.stringify({ username, password }));
     },
+  },
+  created() {
+    const storedAuth = localStorage.getItem(localAuthKey);
+    if (storedAuth) {
+      let parsed;
+
+      try {
+        parsed = JSON.parse(storedAuth);
+      } catch (e) {
+        // Invalid stored auth, just clear it and move on.
+        localStorage.removeItem(localAuthKey);
+        return;
+      }
+
+      if (!parsed || typeof parsed !== "object") {
+        localStorage.removeItem(localAuthKey);
+        return;
+      }
+
+      const { username, password } = parsed;
+
+      if (
+        !username ||
+        !password ||
+        typeof username !== "string" ||
+        typeof password !== "string"
+      ) {
+        localStorage.removeItem(localAuthKey);
+        return;
+      }
+
+      store.commit("LOGIN", { username, password });
+    }
   },
 };
 </script>

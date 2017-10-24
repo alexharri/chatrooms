@@ -1,5 +1,5 @@
 <template>
-  <ul id="message-container">
+  <ul id="message-container" v-on:scroll="readMessages">
     <li v-for="message in messages" :id="`message:${message.id}`">
       {{ message.username }}: {{ message.text }}
     </li>
@@ -57,12 +57,6 @@ export default {
       el.scrollTop = el.scrollHeight;
     }
     this.readMessages();
-  },
-  mounted() {
-    document.getElementById("message-container").addEventListener("scroll", this.readMessages);
-  },
-  beforeDestroy() {
-    document.getElementById("message-container").removeEventListener("scroll", this.readMessages);
   },
 };
 </script>
