@@ -16,7 +16,21 @@ app.use(express.static("dist"));
 app.use(bodyParser.json());
 
 const namespaces = {};
+const messageMap = {};
 const namespaceRegex = /^[A-z]+$/;
+
+function appendMessage(namespace, message) {
+  if (!Array.isArray(messageMap[namespace])) {
+    messageMap[namespace] = [];
+  }
+
+  const list = messageMap[namespace];
+
+  if (list.length === 10) {
+    list.shift();
+  }
+  list.push(message);
+}
 
 function createNameSpace(namespace, cb) {
   if (namespaces[namespace]) {
@@ -52,6 +66,7 @@ function createNameSpace(namespace, cb) {
       socket.emit("login", username);
       socket.on("msg", (text) => {
         console.log(namespace, `${username}: ${text}`);
+        appendMessage(namespace, { username, text });
         nsp.emit("msg", {
           username,
           text,
@@ -105,6 +120,47 @@ app.post("/createRoom", (req, res) => {
     if (err) { throw err; }
     res.sendStatus(201);
   });
+});
+
+app.post("/checkRoomExists", (req, res) => {
+  const namespace = req.body.room;
+
+  if (!namespace || typeof namespace !== "string") {
+    res.statusMessage = "Expected room to be a string.";
+    res.sendStatus(400);
+    return;
+  }
+
+  if (!namespaceRegex.test(namespace)) {
+    res.statusMessage = "INVALID_NAME";
+    res.sendStatus(400);
+    return;
+  }
+
+  if (namespaces[namespace]) {
+    res.sendStatus(200);
+    return;
+  }
+
+  res.statusMessage = "ROOM_NO_EXIST";
+  res.sendStatus(404);
+});
+
+app.get("/recentMessages/:namespace", (req, res) => {
+  const { namespace } = req.params;
+
+  if (!namespaces[namespace]) {
+    res.statusMessage = "ROOM_NO_EXIST";
+    res.sendStatus(404);
+    return;
+  }
+
+  console.log(namespace, messageMap[namespace]);
+  if (messageMap[namespace]) {
+    res.json(messageMap[namespace]);
+    return;
+  }
+  res.json([]);
 });
 
 const port = 3000;

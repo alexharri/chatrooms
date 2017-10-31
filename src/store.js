@@ -33,6 +33,13 @@ const store = new Vuex.Store({
       const { room, text, username } = payload;
       state[room].messages.push({ text, username, read: false, id: shortid() });
     },
+    NEW_MESSAGES(state, payload) {
+      const { room, messages } = payload;
+      state[room].messages = [
+        ...state[room].messages,
+        ...messages.map(message => ({ ...message, read: false, id: shortid() })),
+      ];
+    },
     READ_MESSAGE(state, payload) {
       const { messageId, room } = payload;
       const messageIndex = state[room].messages.map(m => m.id).indexOf(messageId);
